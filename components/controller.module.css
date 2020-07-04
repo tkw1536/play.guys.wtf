@@ -1,0 +1,76 @@
+.controller {
+    background-color: #f2f2f2;
+    min-height: 500px;
+    border-radius: 20px;
+    margin: 10px;
+}
+
+.controller > h1, .controller > h2 {
+    text-align: center;
+}
+
+.button {
+
+    /* align everything in the center */
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+
+    /* everything is black */
+    color: black;
+    
+    /* 40 * 40 */
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+
+    /* border and shadow */
+    border: 1px solid black;
+    border-radius: 20px;
+
+    /* spaces betweeen this and the next button */
+    margin: 10px;
+    box-shadow: black 10px 10px;
+}
+
+.button.active {
+    background-color: yellow;
+    box-shadow: 0px 0px;
+    
+    position: relative;
+    top: 5px;
+    left: 5px;
+    box-shadow: black 5px 5px;
+}
+
+.axis {
+    display: inline-block;
+    width: 50%;
+}
+
+.axisDisplay, .axisValue {
+    display: block;
+    width: 100%;
+
+    background-color: black;
+}
+
+.axisValue {
+    color: white;
+    text-align: center;
+    margin-bottom: 0px;
+}
+
+.axisDisplay {
+    height: 5px;
+    overflow: none;
+}
+
+.axisDisplay > .marker {
+    display: inline-block;
+    height: 20px;
+    width: 2%;
+    background-color: red;
+
+    position: relative;
+}
