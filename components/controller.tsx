@@ -3,7 +3,7 @@ import style from './controller.module.css';
 
 const UPDATE_INTERVAL = 100;
 
-export default class GamePadView extends React.Component<{gamepad: Gamepad, timestamp: 0}> {
+export default class GamePadView extends React.Component<{gamepad: Gamepad}> {
     private timer: number | null = null;
     componentDidMount() {
         this.timer = window.setInterval(() => this.forceUpdate(), UPDATE_INTERVAL);
@@ -32,7 +32,7 @@ export default class GamePadView extends React.Component<{gamepad: Gamepad, time
     }
 }
 
-class GamepadButtonView extends React.Component<{pressed: boolean, value: number, timestamp: number}> {
+class GamepadButtonView extends React.Component<{pressed: boolean, value: number}> {
     render() {
         const { pressed, value } = this.props;
         return <p className={`${style.button} ${pressed ? style.active: ""}`}>{value}</p>
