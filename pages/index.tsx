@@ -1,13 +1,6 @@
 import * as React from 'react';
-import dynamic from "next/dynamic";
+import GamePadSelector from "../components/list";
 
-const GamePadSelector = dynamic(() => import("../components/list"), {
-    ssr: false,
-});
-
-
-export default class extends React.Component {
-    render() {
-        return <GamePadSelector />;
-    }
+export default function Index() {
+    return <GamePadSelector />;
 }

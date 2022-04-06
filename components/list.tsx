@@ -62,6 +62,9 @@ function GamepadAPIEmpty() {
             This page allows you to inspect all your Gamepads compatible with the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API" rel="noopener noreferer" target="_blank">Gamepad API</a>.
             Connect a gamepad to your machine to get started.
         </p>
+        <p className={style.info}>
+            If your controller does not show up, try pushing one of the buttons.
+        </p>
     </div>;
 }
 
