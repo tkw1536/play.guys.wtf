@@ -18,49 +18,36 @@ export default class List extends React.Component<{}, SelectorState> {
 
     componentDidMount() {
         if (!navigator.getGamepads) {
-            this.setState({unsupported: true});
-            return;    
+            this.setState({ unsupported: true });
+            return;
         }
 
-        const gamepads = Array.from(navigator.getGamepads()).filter(e => e !== null);
-        this.setState({gamepads});
-
+        this.updateGamepads();
 
         // listen to gamepad events
-        window.addEventListener("gamepadconnected", this.onAddGamepad);
-        window.addEventListener("gamepaddisconnected", this.onRemoveGamepad);
+        window.addEventListener("gamepadconnected", this.updateGamepads);
+        window.addEventListener("gamepaddisconnected", this.updateGamepads);
+    }
+
+    private readonly updateGamepads = () => {
+        const gamepads = Array.from(navigator.getGamepads()).filter(e => e !== null);
+        this.setState({ gamepads });
     }
 
     componentWillUnmount() {
-        if(!navigator.getGamepads) return;
+        if (!navigator.getGamepads) return;
 
         // stop listening to gamepad events
-        window.removeEventListener("gamepadconnected", this.onAddGamepad);
-        window.removeEventListener("gamepaddisconnected", this.onRemoveGamepad);
+        window.removeEventListener("gamepadconnected", this.updateGamepads);
+        window.removeEventListener("gamepaddisconnected", this.updateGamepads);
     }
-
-    onAddGamepad = ({ gamepad }: GamepadEvent) => {
-        this.setState(({ gamepads }: SelectorState) => {
-            // if this gamepad was already connected, do nothing. 
-            if (gamepads.find(gp => gp.index === gamepad.index) !== undefined) {
-                return;
-            }
-
-            return { gamepads: [...gamepads, gamepad] };
-        });
-    }
-
-    onRemoveGamepad = ({ gamepad }: GamepadEvent) => {
-        this.setState(({ gamepads }: SelectorState) => {
-            // remove this gamepad from the list
-            return { gamepads: [...gamepads.filter(gp => gp.index !== gamepad.index)] };
-        });
-    }
-
+    
     render() {
         const { gamepads, unsupported } = this.state;
         if (unsupported) return <GamepadAPIUnsupported />;
-        
+
+        if (gamepads.length === 0) return <GamepadAPIEmpty />;
+
         return <div className={style.wrapper}>{
             gamepads.map(gp => <GamePadView key={gp.index} gamepad={gp} />)
         }
@@ -68,14 +55,22 @@ export default class List extends React.Component<{}, SelectorState> {
     }
 }
 
-class GamepadAPIUnsupported extends React.Component {
-    render() {
-        return <div className={style.wrapper}>
-            <h1>Unable to list Gamepads</h1>
-            <p className={style.error}>
-                Your browser does not seem to support Gamepads. <br />
-                Please upgrade to a modern version of Firefox or Chrome. 
-            </p>
-        </div>;
-    }
+function GamepadAPIEmpty() {
+    return <div className={style.wrapper}>
+        <h1>No Gamepad detected</h1>
+        <p className={style.info}>
+            This page allows you to inspect all your Gamepads compatible with the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API" rel="noopener noreferer" target="_blank">Gamepad API</a>.
+            Connect a gamepad to your machine to get started.
+        </p>
+    </div>;
+}
+
+function GamepadAPIUnsupported() {
+    return <div className={style.wrapper}>
+        <h1>Unable to list Gamepads</h1>
+        <p className={style.error}>
+            Your browser does not seem to support Gamepads. <br />
+            Please upgrade to a modern version of Firefox or Chrome.
+        </p>
+    </div>;
 }
